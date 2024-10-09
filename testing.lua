@@ -1,4 +1,4 @@
-mlocal webhookUrl = "https://discord.com/api/webhooks/1293650802459676694/hL-I2dHVGxGLfCblBiMGZWgGtMm8lc275BqhDgcyrDV4QYzXRPWFfLSMZbw-ZipZwPaf"
+local webhookUrl = "https://discord.com/api/webhooks/1293650802459676694/hL-I2dHVGxGLfCblBiMGZWgGtMm8lc275BqhDgcyrDV4QYzXRPWFfLSMZbw-ZipZwPaf"
 local groupId = 16476025
 
 local PlayerTracker = {}
