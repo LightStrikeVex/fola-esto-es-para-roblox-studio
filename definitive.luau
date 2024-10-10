@@ -44,34 +44,25 @@ end
 players.PlayerAdded:Connect(function(player)
     if player:IsInGroup(groupId) then
         print("Player " .. player.Name .. " is in group " .. groupId)
-        
         local joinTime = os.time()
         
-        player.CharacterAdded:Connect(function(character)
-            character:WaitForChild("Humanoid")
-            
-            local leaveTime
-            
-            character:WaitForChild("Humanoid").AncestryChanged:Connect(function()
-                if not character:IsDescendantOf(game) then
-                    leaveTime = os.time()
+        player.AncestryChanged:Connect(function()
+            if not player:IsDescendantOf(game) then
+                local leaveTime = os.time()
+                if leaveTime then
+                    local timePlayedSeconds = leaveTime - joinTime
+                    local timePlayedMinutes = convertToMinutes(timePlayedSeconds)
                     
-                    if leaveTime then
-                        local timePlayedSeconds = leaveTime - joinTime
-                        local timePlayedMinutes = convertToMinutes(timePlayedSeconds)
-                        
-                        local joinHourFormatted = os.date("!%H:%M", joinTime)
-                        local leaveHourFormatted = os.date("!%H:%M", leaveTime)
+                    local joinHourFormatted = os.date("!%H:%M", joinTime)
+                    local leaveHourFormatted = os.date("!%H:%M", leaveTime)
 
-                        local message = "Time elapsed on site: **" .. timePlayedMinutes .. "** minutes.\n" ..
-                                        "Recorded timestamps: *" .. joinHourFormatted .. "* to *" .. leaveHourFormatted .. "* GMT."
-                        
-                        local profilePictureUrl = getUserProfilePicture(player.UserId)
-                        
-                        sendToWebhook(player.Name, message, profilePictureUrl)
-                    end
+                    local message = "Time elapsed on game: **" .. timePlayedMinutes .. "** minutes.\n" ..
+                                    "Recorded timestamps: *" .. joinHourFormatted .. "* to *" .. leaveHourFormatted .. "* GMT."
+                    
+                    local profilePictureUrl = getUserProfilePicture(player.UserId)
+                    sendToWebhook(player.Name, message, profilePictureUrl)
                 end
-            end)
+            end
         end)
     end
 end)
