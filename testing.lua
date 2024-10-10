@@ -31,7 +31,7 @@ local function convertToMinutes(seconds)
 end
 
 players.PlayerAdded:Connect(function(player)
-    if player:IsInGroup(groupId) and player.Name then
+    if player.Name and player:IsInGroup(groupId) then
         local joinTime = os.time()
         local joinTimestamp = os.date("!*t", joinTime)
 
