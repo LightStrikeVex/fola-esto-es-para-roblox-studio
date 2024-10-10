@@ -32,7 +32,6 @@ players.PlayerAdded:Connect(function(player)
         print("Player " .. player.Name .. " is in group " .. groupId)
         local joinTime = os.time()
         
-        -- Cuando el jugador sale
         player.AncestryChanged:Connect(function()
             if not player:IsDescendantOf(game) then
                 local leaveTime = os.time()
