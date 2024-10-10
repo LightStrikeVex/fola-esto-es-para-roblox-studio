@@ -25,7 +25,7 @@ local function sendToWebhook(username, message, iconUrl)
 end
 
 local function convertToMinutes(seconds)
-    return math.floor(seconds / 60)
+    return math.ceil(seconds / 60)
 end
 
 players.PlayerAdded:Connect(function(player)
@@ -48,9 +48,14 @@ players.PlayerAdded:Connect(function(player)
                     local thumbnailUrl = "https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=" .. player.UserId .. "&size=420x420&format=Png&isCircular=false"
                     local response = httpService:GetAsync(thumbnailUrl)
                     local jsonData = httpService:JSONDecode(response)
-                    local imageUrl = jsonData.data[1].imageUrl
                     
-                    sendToWebhook(player.Name, message, imageUrl)
+                    if jsonData and jsonData.data and jsonData.data[1] and jsonData.data[1].imageUrl then
+                        local imageUrl = jsonData.data[1].imageUrl
+                        sendToWebhook(player.Name, message, imageUrl)
+                    else
+                        warn("Error parsing JSON response: " .. response)
+                        sendToWebhook(player.Name, message, "https://example.com/default-avatar.png")
+                    end
                 end
             end
         end)
