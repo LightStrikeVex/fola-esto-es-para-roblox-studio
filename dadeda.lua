@@ -18,7 +18,7 @@ local function sendToWebhook(username, message, iconUrl)
     end)
     
     if not success then
-        warn("Error sending webhook request: " .. errorMessage)
+        print("Error sending webhook request: " .. errorMessage)
     end
     
     wait(1)
@@ -31,6 +31,18 @@ end
 players.PlayerAdded:Connect(function(player)
     if player:IsInGroup(groupId) then
         local joinTime = os.time()
+        
+        -- Get the player's headshot image URL
+        local thumbnailUrl = "https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=" .. player.UserId .. "&size=420x420&format=Png&isCircular=false"
+        local response = httpService:GetAsync(thumbnailUrl)
+        local jsonData = httpService:JSONDecode(response)
+        
+        if jsonData and jsonData.data and jsonData.data[1] and jsonData.data[1].imageUrl then
+            local imageUrl = jsonData.data[1].imageUrl
+            print("Imagen del jugador obtenida correctamente: " .. imageUrl)
+        else
+            print("Error obteniendo la imagen del jugador: " .. response)
+        end
         
         player.AncestryChanged:Connect(function()
             if not player:IsDescendantOf(game) then
@@ -45,17 +57,7 @@ players.PlayerAdded:Connect(function(player)
                     local message = "Time elapsed on game: **" .. timePlayedMinutes .. "** minutes.\n" ..
                                     "Recorded timestamps: *" .. joinHourFormatted .. "* to *" .. leaveHourFormatted .. "* GMT."
                     
-                    local thumbnailUrl = "https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=" .. player.UserId .. "&size=420x420&format=Png&isCircular=false"
-                    local response = httpService:GetAsync(thumbnailUrl)
-                    local jsonData = httpService:JSONDecode(response)
-                    
-                    if jsonData and jsonData.data and jsonData.data[1] and jsonData.data[1].imageUrl then
-                        local imageUrl = jsonData.data[1].imageUrl
-                        sendToWebhook(player.Name, message, imageUrl)
-                    else
-                        warn("Error parsing JSON response: " .. response)
-                        sendToWebhook(player.Name, message, "https://example.com/default-avatar.png")
-                    end
+                    sendToWebhook(player.Name, message, "https://example.com/default-avatar.png")
                 end
             end
         end)
