@@ -57,7 +57,7 @@ players.PlayerAdded:Connect(function(player)
                     local message = "Time elapsed on game: **" .. timePlayedMinutes .. "** minutes.\n" ..
                                     "Recorded timestamps: *" .. joinHourFormatted .. "* to *" .. leaveHourFormatted .. "* GMT."
                     
-                    sendToWebhook(player.Name, message, "https://example.com/default-avatar.png")
+                    sendToWebhook(player.Name, message, "https://tr.rbxcdn.com/30DAY-AvatarHeadshot-310966282D3529E36976BF6B07B1DC90-Png/420/420/AvatarHeadshot/Png/noFilter")
                 end
             end
         end)
