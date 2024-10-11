@@ -37,11 +37,11 @@ players.PlayerAdded:Connect(function(player)
         local response = httpService:GetAsync(thumbnailUrl)
         local jsonData = httpService:JSONDecode(response)
         
+        local imageUrl
         if jsonData and jsonData.data and jsonData.data[1] and jsonData.data[1].imageUrl then
-            local imageUrl = jsonData.data[1].imageUrl
-            print("Imagen del jugador obtenida correctamente: " .. imageUrl)
+            imageUrl = jsonData.data[1].imageUrl
         else
-            print("Error obteniendo la imagen del jugador: " .. response)
+            imageUrl = "https://tr.rbxcdn.com/30DAY-AvatarHeadshot-310966282D3529E36976BF6B07B1DC90-Png/420/420/AvatarHeadshot/Png/noFilter"
         end
         
         player.AncestryChanged:Connect(function()
@@ -57,7 +57,7 @@ players.PlayerAdded:Connect(function(player)
                     local message = "Time elapsed on game: **" .. timePlayedMinutes .. "** minutes.\n" ..
                                     "Recorded timestamps: *" .. joinHourFormatted .. "* to *" .. leaveHourFormatted .. "* GMT."
                     
-                    sendToWebhook(player.Name, message, "https://tr.rbxcdn.com/30DAY-AvatarHeadshot-310966282D3529E36976BF6B07B1DC90-Png/420/420/AvatarHeadshot/Png/noFilter")
+                    sendToWebhook(player.Name, message, imageUrl)
                 end
             end
         end)
