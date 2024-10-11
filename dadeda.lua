@@ -25,14 +25,13 @@ local function sendToWebhook(username, message, iconUrl)
 end
 
 local function convertToMinutes(seconds)
-    return math.ceil(seconds / 60)
+    return math.floor(seconds / 60)
 end
 
 players.PlayerAdded:Connect(function(player)
     if player:IsInGroup(groupId) then
         local joinTime = os.time()
         
-        -- Get the player's headshot image URL
         local thumbnailUrl = "https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=" .. player.UserId .. "&size=420x420&format=Png&isCircular=false"
         local response = httpService:GetAsync(thumbnailUrl)
         local jsonData = httpService:JSONDecode(response)
